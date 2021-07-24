@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "687383581578",
+    "project_id": "firsttest-7f52f",
+    "storage_bucket": "firsttest-7f52f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687383581578:android:12c3d1ff54ca9f5dd76e73",
+        "android_client_info": {
+          "package_name": "com.example.translator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687383581578-u25etmnantsi7grtjs3abgsj3t1ih3dt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOmTsLtyX6EnKgB1HXKqZTRWImmVSt6dM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687383581578-u25etmnantsi7grtjs3abgsj3t1ih3dt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "687383581578-sgb2gl5kdtbt50hkt3kduegdfol1e5nv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "sentilab.google-Test1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
