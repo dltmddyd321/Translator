@@ -69,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
        ArrayAdapter fromAdapter = new ArrayAdapter(this, R.layout.item_spinner,fromLanguages);
@@ -92,9 +90,7 @@ public class MainActivity extends AppCompatActivity {
            }
 
            @Override
-           public void onNothingSelected(AdapterView<?> parent) {
-
-           }
+           public void onNothingSelected(AdapterView<?> parent) { }
        });
 
        ArrayAdapter toAdapter = new ArrayAdapter(this, R.layout.item_spinner,toLanguages);
@@ -111,12 +107,16 @@ public class MainActivity extends AppCompatActivity {
            public void onClick(View v) {
                translateResult.setText("");
                if(sourceEdit.getText().toString().isEmpty()) {
+                   //번역할 내용이 입력되지 않았다면 메시지 출력
                    Toast.makeText(MainActivity.this,"번역할 내용을 입력해주세요!",Toast.LENGTH_SHORT).show();
                } else if(fromLanguageCode == 0) {
+                   //번역 대상 언어가 지정되지 않았다면 메시지 출력
                    Toast.makeText(MainActivity.this,"번역 대상 언어를 선택해주세요!",Toast.LENGTH_SHORT).show();
                } else if(toLanguageCode == 0) {
+                   //번역 결과 언어가 지정되지 않았다면 메시지 출력
                    Toast.makeText(MainActivity.this,"번역 결과 언어를 선택해주세요!",Toast.LENGTH_SHORT).show();
                } else {
+                   //번역할 내용이 입력되어있고, 대상 언어와 결과 언어가 지정되었다면 그들을 인수로 받아 번역 함수 실행
                    translateText(fromLanguageCode, toLanguageCode, sourceEdit.getText().toString());
                }
            }
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     private void translateText(int fromLanguageCode, int toLanguageCode, String source) {
         //번역 대상 언어, 번역 결과 언어, 번역할 문자열을 인자 값으로 받아와 실제 번역을 진행할 함수 생성
         //번역을 진행하는 객체 Options를 생성하여 대상 언어와 결과 언어를 받아 빌드
-        translateResult.setText("Downloading Modal...");
+        translateResult.setText("Downloading Model...");
         FirebaseTranslatorOptions options = new FirebaseTranslatorOptions.Builder()
                 .setSourceLanguage(fromLanguageCode)
                 .setTargetLanguage(toLanguageCode)
@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         //자연적 번역을 위한 머신 러닝 기반 Entry class로서, 인스턴스로 options 객체를 요구
 
         FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
+        //번역을 위한 파이어베이스 모델을 지원받기
 
         translator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -187,11 +188,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s) {
                         translateResult.setText(s);
+                        //번역에 성공하면 성공한 결과 내용이 결과창에 출력
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //번역 과정 실패 시 예외 처리
                     }
                 });
             }
@@ -199,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                //파이어베이스 모델 호출 과정 실패 시 예외 처리
             }
         });
     }
@@ -208,15 +212,15 @@ public class MainActivity extends AppCompatActivity {
         //파이어베이스 번역 도구를 위한 코드 선언
         switch (language) {
             case "English":
-                //스피너의 English가 선택되면 English으로 번역
+                //스피너의 English가 선택되면 영어로 번역
                 languageCode = FirebaseTranslateLanguage.EN;
                 break;
             case "Japanese":
-                //스피너의 Japan이 선택되면 Japan으로 번역
+                //스피너의 Japanese가 선택되면 일본어로 번역
                 languageCode = FirebaseTranslateLanguage.JA;
                 break;
             case "Korean":
-                //스피너의 Korea가 선택되면 Korea로 번역
+                //스피너의 Korean이 선택되면 한국어로 번역
                 languageCode = FirebaseTranslateLanguage.KO;
                 break;
         }
