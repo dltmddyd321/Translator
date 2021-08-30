@@ -1,5 +1,6 @@
 package com.example.translater_version1;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +15,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
@@ -93,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
            }
        });
 
-       ArrayAdapter toAdapter = new ArrayAdapter(this, R.layout.item_spinner,fromLanguages);
+       ArrayAdapter toAdapter = new ArrayAdapter(this, R.layout.item_spinner,toLanguages);
        //스피너에 번역 결과 언어의 목록을 생성하기 위한 Adapter 생성
 
        toAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -164,15 +168,39 @@ public class MainActivity extends AppCompatActivity {
     private void translateText(int fromLanguageCode, int toLanguageCode, String source) {
         //번역 대상 언어, 번역 결과 언어, 번역할 문자열을 인자 값으로 받아와 실제 번역을 진행할 함수 생성
         //번역을 진행하는 객체 Options를 생성하여 대상 언어와 결과 언어를 받아 빌드
-        translateResult.setText("번역 진행 중...");
+        translateResult.setText("Downloading Modal...");
         FirebaseTranslatorOptions options = new FirebaseTranslatorOptions.Builder()
                 .setSourceLanguage(fromLanguageCode)
                 .setTargetLanguage(toLanguageCode)
                 .build();
 
         FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance().getTranslator(options);
-        //자연적 번역을 위한 Entry class로서, 인스턴스로 options 객체를 요구
+        //자연적 번역을 위한 머신 러닝 기반 Entry class로서, 인스턴스로 options 객체를 요구
 
+        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
+
+        translator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                translateResult.setText("번역 진행 중...");
+                translator.translate(source).addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        translateResult.setText(s);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public int getLanguageCode(String language) {
