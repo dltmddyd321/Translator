@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton translateBtn;
     private TextView translateResult;
 
-    String[] fromLanguages = {"From","English","Japan","Korea"};
+    String[] fromLanguages = {"From","English","Japanese","Korean"};
     //번역 대상 스피너에 담길 요소를 배열로 선언
 
-    String[] toLanguages = {"To","English","Japan","Korea"};
+    String[] toLanguages = {"To","English","Japanese","Korean"};
     //번역 결과 스피너에 담길 요소를 배열로 선언
 
     private static final int REQUEST_PERMISSION_CODE = 1;
@@ -211,11 +211,11 @@ public class MainActivity extends AppCompatActivity {
                 //스피너의 English가 선택되면 English으로 번역
                 languageCode = FirebaseTranslateLanguage.EN;
                 break;
-            case "Japan":
+            case "Japanese":
                 //스피너의 Japan이 선택되면 Japan으로 번역
                 languageCode = FirebaseTranslateLanguage.JA;
                 break;
-            case "Korea":
+            case "Korean":
                 //스피너의 Korea가 선택되면 Korea로 번역
                 languageCode = FirebaseTranslateLanguage.KO;
                 break;
